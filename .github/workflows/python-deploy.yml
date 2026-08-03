@@ -1,0 +1,18 @@
+name: Python Deployment
+on: [push]
+jobs:
+  Explore-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+
+      - name: Listing the files
+        run: ls -lrt
+
+      - name: Checking the python version
+        run: python -V
+
+      - name: Python Code Execution
+        run: python hello-world.py
+      
