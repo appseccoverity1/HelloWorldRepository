@@ -1,37 +1,46 @@
 name: "Terraform Push Pipeline"
-
 on:
   push:
-   branches: ["main"]
+    branches:
+      - main
+      
+jobs:
+  build-aws-infra:
+    name: "Terraform CI/CD"
+    runs-on: ubuntu-22.04
+     
+    # Set environment variables for cloud credentials using GitHub Secrets
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+       aws-region: us-east-1
 
-   jobs:
-    build-aws-infra:
-     runs-on: ubuntu-22.04
-     steps:
-      -name: Checkout Code
-       uses: actions/checkout@v4
+    steps:
+      # 1. Fetch the repository code
+      - name: Checkout Code
+        uses: actions/checkout@v4
 
-       -name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v6.2.3
-        with:
-         aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-         aws-region: us-east-2
+      # 2. Check Terraform version
+      - name: Setup Terraform
+        run: terraform version
 
-        - name: Check Terraform version
-  run: terraform version
+      # 3. Check for proper code formatting syntax
+      - name: Terraform Format Check
+        run: terraform fmt
 
-- name: Run Terraform init
-  run: terraform init
+      # 4. Download providers and initialize backend state
+      - name: Terraform Init
+        run: terraform init
 
-- name: Run Terraform Format
-  run: terraform fmt
+      # 5. Validate the configuration files
+      - name: Terraform Validate
+        run: terraform validate
 
-- name: Run Terraform validate
-  run: terraform validate
+      # 6. Generate speculative execution plan on Pull Requests
+      - name: Terraform Plan
+        run: terraform plan
 
-- name: Run Terraform plan
-  run: terraform plan
+      # 7. Automatically execute changes ONLY on direct push/merge to main branch
+      - name: Terraform Apply
+        run: terraform apply -auto-approve
 
-- name: Run Terraform Apply
-  run: terraform apply -auto-approve
