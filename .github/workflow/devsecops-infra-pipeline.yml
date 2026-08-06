@@ -17,4 +17,21 @@ on:
          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
          aws-region: us-east-2
-        
+
+        - name: Check Terraform version
+  run: terraform version
+
+- name: Run Terraform init
+  run: terraform init
+
+- name: Run Terraform Format
+  run: terraform fmt
+
+- name: Run Terraform validate
+  run: terraform validate
+
+- name: Run Terraform plan
+  run: terraform plan
+
+- name: Run Terraform Apply
+  run: terraform apply -auto-approve
