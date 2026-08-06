@@ -6,7 +6,7 @@ variable "instance_type" {
   default = "t3.micro"
 }
 
-resource "aws_instance" "ram_server" {
+resource "aws_instance" "sank_server" {
   ami           = var.ami_id
   instance_type = var.instance_type
 
