@@ -1,46 +1,45 @@
-name: "Terraform Push Pipeline"
+name: Terraform Push Pipeline
+
 on:
   push:
-   branches: ["main"] 
+    branches:
+      - main
 
 jobs:
   build-aws-infra:
-    name: "Terraform CI/CD"
+    name: Terraform CI/CD
     runs-on: ubuntu-22.04
 
-     
-    # Set environment variables for cloud credentials using GitHub Secrets
     env:
       AWS_ACCESS_KEY_ID: ${{ secrets.ACCESS_KEY_ID }}
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-       aws-region: us-east-1
+      AWS_DEFAULT_REGION: us-east-1
 
     steps:
-      # 1. Fetch the repository code
+      # Checkout repository
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # 2. Check Terraform version
-      - name: Setup Terraform
+      # Verify Terraform version
+      - name: Terraform Version
         run: terraform version
 
-      # 3. Check for proper code formatting syntax
+      # Check Terraform formatting
       - name: Terraform Format Check
-        run: terraform fmt
+        run: terraform fmt -check -recursive
 
-      # 4. Download providers and initialize backend state
+      # Initialize Terraform
       - name: Terraform Init
         run: terraform init
 
-      # 5. Validate the configuration files
+      # Validate configuration
       - name: Terraform Validate
         run: terraform validate
 
-      # 6. Generate speculative execution plan on Pull Requests
+      # Generate execution plan
       - name: Terraform Plan
         run: terraform plan
 
-      # 7. Automatically execute changes ONLY on direct push/merge to main branch
+      # Apply changes
       - name: Terraform Apply
         run: terraform apply -auto-approve
-
