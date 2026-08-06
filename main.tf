@@ -6,10 +6,6 @@ variable "instance_type" {
   default = "t3.micro"
 }
 
-variable "instance_name" {
-  default = "learn-terraform"
-}
-
 resource "aws_instance" "ram_server" {
   ami           = var.ami_id
   instance_type = var.instance_type
