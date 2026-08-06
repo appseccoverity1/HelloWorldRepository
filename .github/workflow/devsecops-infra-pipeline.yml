@@ -1,5 +1,4 @@
 name: Terraform Push Pipeline
-
 on:
   push:
     branches:
