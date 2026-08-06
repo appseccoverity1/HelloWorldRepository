@@ -1,5 +1,5 @@
 output "instance_id" {
-  description = "ID of the EC2 instance hi"
+  description = "ID of the EC2 instance"
   value       = aws_instance.sank_server.id
 }
 
