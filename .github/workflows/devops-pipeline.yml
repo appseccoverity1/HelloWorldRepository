@@ -20,7 +20,6 @@ jobs:
         with:
           fetch-depth: 0
           
-       # Secret Scanning
       - name: Secret Scanning using GitLeaks
         uses: gitleaks/gitleaks-action@v3
         env:
