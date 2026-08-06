@@ -1,5 +1,5 @@
 output "instance_id" {
-description="ID of the EC2 instance Hello"
+description="ID of the EC2 instance"
 value = aws_instance.ram_server.id
 }
 output "instance_public_ip"{
