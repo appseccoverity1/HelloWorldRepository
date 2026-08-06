@@ -1,5 +1,8 @@
 name: "Terraform Push Pipeline"
-on: [push] 
+on:
+  push:
+   branches: ["main"] 
+
 jobs:
   build-aws-infra:
     name: "Terraform CI/CD"
